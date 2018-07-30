@@ -689,7 +689,7 @@ class Validator
                 if ($v['rule'] !== 'required'
                     && !$this->hasRule('required', $field)
                     && !is_object($value)
-                    && $value == ''
+                    && (is_null($value) || (trim($value) === ''))
                 ) {
                     continue;
                 }

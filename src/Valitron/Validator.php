@@ -714,7 +714,13 @@ class Validator
 
     private function getValueFromPath($array, $path)
     {
-        return array_reduce(explode('/', $path), function ($o, $p) {return $o[$p]; }, $array);
+        return array_reduce(
+            explode('/', $path),
+            function ($o, $p) {
+                return isset($o[$p]) ? $o[$p] : null;
+            },
+            $array
+        );
     }
 
     /**

@@ -683,7 +683,8 @@ class Validator
     {
         foreach($this->_validations as $v) {
             foreach($v['fields'] as $field) {
-                $value = isset($this->_fields[$field]) ? $this->_fields[$field] : null;
+                $value = $this->getValueFromPath($this->_fields, $field);
+                $value = isset($value) ? $value : null;
 
                 // Don't validate if the field is not required and the value is empty
                 if ($v['rule'] !== 'required'
@@ -709,6 +710,11 @@ class Validator
         }
 
         return count($this->errors()) === 0;
+    }
+
+    private function getValueFromPath($array, $path)
+    {
+        return array_reduce(explode('/', $path), function ($o, $p) {return $o[$p]; }, $array);
     }
 
     /**

@@ -712,14 +712,20 @@ class Validator
         return count($this->errors()) === 0;
     }
 
-    private function getValueFromPath($array, $path)
+    private function getValueFromPath($fields, $path)
     {
         return array_reduce(
             explode('/', $path),
             function ($o, $p) {
-                return isset($o[$p]) ? $o[$p] : null;
+                if (is_array($o)) {
+                    return isset($o[$p]) ? $o[$p] : null;
+                } elseif (is_object($o)) {
+                    return $o->$p;
+                } else {
+                    return null;
+                }
             },
-            $array
+            $fields
         );
     }
 
